@@ -7,6 +7,20 @@ import SnakeGame from "@/components/organism/snake";
 export default function SnakeOnLanding() {
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 740);
+    };
+    checkIsMobile();
+
+    window.addEventListener("resize", checkIsMobile);
+
+    return () => {
+      window.removeEventListener("resize", checkIsMobile);
+    };
+  }, []);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -57,15 +71,6 @@ export default function SnakeOnLanding() {
                   SNAKE-ON
                 </span>
               </h1>
-            </div>
-
-            <div className="hidden md:flex gap-6">
-              <button className="px-6 py-2 rounded-full border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all duration-300 font-bold hover:shadow-lg hover:shadow-cyan-400/50">
-                LEADERBOARD
-              </button>
-              <button className="px-6 py-2 rounded-full bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-400 hover:to-pink-400 transition-all duration-300 font-bold shadow-lg shadow-pink-500/50">
-                HIGH SCORES
-              </button>
             </div>
           </div>
         </div>
@@ -167,8 +172,12 @@ export default function SnakeOnLanding() {
             {/* Game Controls Info */}
             <div className="mt-8 text-center">
               <p className="text-cyan-300 mb-2">
-                <span className="font-bold text-pink-400">CONTROLS:</span> Use
-                Arrow Keys or WASD
+                <span className="font-bold text-pink-400">CONTROLS:</span>{" "}
+                {isMobile ? (
+                  <span>Use Swipe to Control</span>
+                ) : (
+                  <span>Use Arrow Keys or WASD</span>
+                )}
               </p>
               <p className="text-xs text-gray-500">
                 Eat the glowing orbs • Avoid walls and yourself • Beat your high
